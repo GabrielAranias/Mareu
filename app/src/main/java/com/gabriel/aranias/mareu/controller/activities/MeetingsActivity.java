@@ -9,7 +9,7 @@ import android.view.View;
 
 import com.gabriel.aranias.mareu.R;
 import com.gabriel.aranias.mareu.controller.adapter.MeetingRecyclerViewAdapter;
-import com.gabriel.aranias.mareu.controller.adapter.MeetingRecyclerViewClickInterface;
+import com.gabriel.aranias.mareu.controller.adapter.onMeetingClickListener;
 import com.gabriel.aranias.mareu.databinding.ActivityMeetingsBinding;
 import com.gabriel.aranias.mareu.di.DI;
 import com.gabriel.aranias.mareu.model.Meeting;
@@ -18,9 +18,9 @@ import com.gabriel.aranias.mareu.service.MeetingApiService;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MeetingsActivity extends AppCompatActivity implements MeetingRecyclerViewClickInterface {
+public class MeetingsActivity extends AppCompatActivity implements onMeetingClickListener {
 
-    private ActivityMeetingsBinding binding;
+    public static ActivityMeetingsBinding binding;
     private MeetingRecyclerViewAdapter adapter;
     private List<Meeting> meetings;
     private MeetingApiService service;
@@ -33,8 +33,8 @@ public class MeetingsActivity extends AppCompatActivity implements MeetingRecycl
         setContentView(binding.getRoot());
         adapter = new MeetingRecyclerViewAdapter();
         binding.meetingsList.setAdapter(adapter);
-        initMeetingList();
 
+        initMeetingList();
         configureToolbar();
         addMeeting();
     }
@@ -74,8 +74,8 @@ public class MeetingsActivity extends AppCompatActivity implements MeetingRecycl
     public void onMeetingClicked(int position) {
         Intent meetingDetailsIntent = new Intent(getApplicationContext(),
                 MeetingDetailsActivity.class);
-        String MEETING = "meeting";
-        meetingDetailsIntent.putExtra(MEETING, meetings.get(position));
+
+        meetingDetailsIntent.putExtra("meeting", meetings.get(position));
         startActivity(meetingDetailsIntent);
     }
 
@@ -83,5 +83,6 @@ public class MeetingsActivity extends AppCompatActivity implements MeetingRecycl
     public void onDeleteBtnClicked(int position) {
         meetings.remove(position);
         adapter.notifyItemRemoved(position);
+        adapter.notifyDataSetChanged();
     }
 }

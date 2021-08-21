@@ -15,5 +15,9 @@ public class DummyMeetingApiService implements MeetingApiService {
 
     public void createMeeting(Meeting meeting) { meetings.add(meeting); }
 
+    public Meeting getMeetingByPosition(int position) {
+        return meetings.get(position);
+    }
+
     public void deleteMeeting(Meeting meeting) { meetings.remove(meeting); }
 }

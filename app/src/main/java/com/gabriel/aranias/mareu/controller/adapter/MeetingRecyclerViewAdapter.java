@@ -16,11 +16,11 @@ import java.util.List;
 public class MeetingRecyclerViewAdapter extends RecyclerView.Adapter<MeetingRecyclerViewAdapter.ViewHolder> {
 
     private List<Meeting> meetings = new ArrayList<>();
-    private MeetingRecyclerViewClickInterface clickInterface;
+    private onMeetingClickListener clickListener;
 
-    public void updateMeetingList(List<Meeting> meetings, MeetingRecyclerViewClickInterface clickInterface) {
+    public void updateMeetingList(List<Meeting> meetings, onMeetingClickListener listener) {
         this.meetings = meetings;
-        this.clickInterface = clickInterface;
+        this.clickListener = listener;
     }
 
     @NonNull
@@ -52,14 +52,14 @@ public class MeetingRecyclerViewAdapter extends RecyclerView.Adapter<MeetingRecy
             this.binding.meetingInfoItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    clickInterface.onMeetingClicked(getAdapterPosition());
+                    clickListener.onMeetingClicked(getAdapterPosition());
                 }
             });
 
             this.binding.deleteBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    clickInterface.onDeleteBtnClicked(getAdapterPosition());
+                    clickListener.onDeleteBtnClicked(getAdapterPosition());
                 }
             });
         }

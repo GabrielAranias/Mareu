@@ -18,6 +18,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.gabriel.aranias.mareu.R;
+import com.gabriel.aranias.mareu.controller.activities.MeetingsActivity;
 import com.gabriel.aranias.mareu.controller.adapter.RoomSpinnerAdapter;
 import com.gabriel.aranias.mareu.databinding.FragmentAddMeetingBinding;
 import com.gabriel.aranias.mareu.di.DI;
@@ -149,7 +150,8 @@ public class AddMeetingFragment extends Fragment implements AdapterView.OnItemSe
 
                 service.createMeeting(meeting);
                 Toast.makeText(getActivity(),"Réunion enregistrée", Toast.LENGTH_SHORT).show();
-                requireActivity().finish();
+                MeetingsActivity.binding.meetingsList.getAdapter().notifyDataSetChanged();
+                //requireActivity().finish();
             }
         });
     }

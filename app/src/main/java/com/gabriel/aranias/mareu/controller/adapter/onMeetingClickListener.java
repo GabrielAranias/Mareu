@@ -1,6 +1,6 @@
 package com.gabriel.aranias.mareu.controller.adapter;
 
-public interface MeetingRecyclerViewClickInterface {
+public interface onMeetingClickListener {
 
     void onMeetingClicked(int position);
 

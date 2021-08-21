@@ -10,7 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.gabriel.aranias.mareu.databinding.FragmentMeetingDetailsBinding;
+import com.gabriel.aranias.mareu.di.DI;
 import com.gabriel.aranias.mareu.model.Meeting;
+import com.gabriel.aranias.mareu.service.DummyMeetingApiService;
+import com.gabriel.aranias.mareu.service.MeetingApiService;
+
+import java.util.Objects;
 
 public class MeetingDetailsFragment extends Fragment {
 
@@ -38,14 +43,13 @@ public class MeetingDetailsFragment extends Fragment {
 
     // Set up meeting details components to be displayed
     private void displayMeetingDetails() {
-        String MEETING = "MEETING";
-        if (requireActivity().getIntent().hasExtra(MEETING)) {
-            Meeting meeting = requireActivity().getIntent().getParcelableExtra(MEETING);
+        MeetingApiService service = DI.getMeetingApiService();
+            int mPosition = requireActivity().getIntent().getIntExtra("meeting", 0);
+            Meeting meeting = service.getMeetingByPosition(mPosition);
             binding.roomIcon.setImageResource(meeting.getRoom().getRoomIcon());
             binding.meetingInfo.setText(String.format("%s - %s - %s", meeting.getTopic(),
                     meeting.getTime(), meeting.getRoom().getRoomName()));
 
             // TODO: 20/08/2021 meetingAttendees
-        }
     }
 }

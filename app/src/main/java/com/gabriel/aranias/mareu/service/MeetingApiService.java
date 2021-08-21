@@ -11,5 +11,7 @@ public interface MeetingApiService {
 
     void createMeeting(Meeting meeting);
 
+    Meeting getMeetingByPosition(int position);
+
     void deleteMeeting(Meeting meeting);
 }
