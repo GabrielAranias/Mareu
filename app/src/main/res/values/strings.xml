@@ -8,30 +8,8 @@
     <string name="room_filter">Filter meetings by room</string>
     <string name="time_filter">Filter meetings by hour</string>
     <string name="meeting_topic">Sujet</string>
-    <string name="meeting_attendees">Liste des participants</string>
-    <string name="meeting_room">Salle</string>
+    <string name="meeting_attendees">Participants</string>
     <string name="meeting_time">Heure</string>
-
-    <string name="bowser">Bowser</string>
-    <string name="harmonie">Harmonie</string>
-    <string name="larry">Larry</string>
-    <string name="ludwig">Ludwig</string>
-    <string name="luigi">Luigi</string>
-    <string name="mario">Mario</string>
-    <string name="peach">Peach</string>
-    <string name="roi_boo">Roi Boo</string>
-    <string name="waluigi">Waluigi</string>
-    <string name="yoshi">Yoshi</string>
-    <string-array name="rooms">
-        <item>Bowser</item>
-        <item>Harmonie</item>
-        <item>Larry</item>
-        <item>Ludwig</item>
-        <item>Luigi</item>
-        <item>Mario</item>
-        <item>Peach</item>
-        <item>Roi Boo</item>
-        <item>Waluigi</item>
-        <item>Yoshi</item>
-    </string-array>
+    <string name="room_spinner">Spinner to choose a meeting room</string>
+    <string name="example">Example</string>
 </resources>

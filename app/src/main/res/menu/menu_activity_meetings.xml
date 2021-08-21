@@ -5,13 +5,13 @@
         android:id="@+id/meetings_menu_room_filter"
         android:icon="@drawable/baseline_filter_list_24"
         android:title="@string/room_filter"
-        app:showAsAction="ifRoom"
-        app:iconTint="@color/white"/>
+        app:iconTint="@color/white"
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/meetings_menu_time_filter"
         android:icon="@drawable/baseline_av_timer_24"
         android:title="@string/time_filter"
-        app:showAsAction="ifRoom"
-        app:iconTint="@color/white"/>
+        app:iconTint="@color/white"
+        app:showAsAction="ifRoom" />
 </menu>

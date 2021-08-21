@@ -1,9 +1,6 @@
 package com.gabriel.aranias.mareu.controller.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,24 +9,41 @@ import android.view.View;
 
 import com.gabriel.aranias.mareu.R;
 import com.gabriel.aranias.mareu.controller.adapter.MeetingRecyclerViewAdapter;
+import com.gabriel.aranias.mareu.controller.adapter.MeetingRecyclerViewClickInterface;
+import com.gabriel.aranias.mareu.databinding.ActivityMeetingsBinding;
+import com.gabriel.aranias.mareu.di.DI;
 import com.gabriel.aranias.mareu.model.Meeting;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.gabriel.aranias.mareu.service.MeetingApiService;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MeetingsActivity extends AppCompatActivity {
+public class MeetingsActivity extends AppCompatActivity implements MeetingRecyclerViewClickInterface {
 
-    private final List<Meeting> meetings = new ArrayList<>();
+    private ActivityMeetingsBinding binding;
+    private MeetingRecyclerViewAdapter adapter;
+    private List<Meeting> meetings;
+    private MeetingApiService service;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_meetings);
+        service = DI.getMeetingApiService();
+        binding = ActivityMeetingsBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+        adapter = new MeetingRecyclerViewAdapter();
+        binding.meetingsList.setAdapter(adapter);
+        initMeetingList();
 
         configureToolbar();
-        initMeetingList();
         addMeeting();
+    }
+
+    // Init list of meetings
+    private void initMeetingList() {
+        meetings = new ArrayList<>();
+        meetings.addAll(service.getMeetings());
+        adapter.updateMeetingList(meetings, this);
     }
 
     // Set customized toolbar
@@ -41,29 +55,33 @@ public class MeetingsActivity extends AppCompatActivity {
     }
 
     private void configureToolbar() {
-        Toolbar toolbar = findViewById(R.id.meetings_toolbar);
-        setSupportActionBar(toolbar);
-    }
-
-    // Init meeting list via MeetingRecyclerViewAdapter
-    private void initMeetingList() {
-        MeetingRecyclerViewAdapter adapter = new MeetingRecyclerViewAdapter(meetings);
-        RecyclerView rv = findViewById(R.id.meetings_list);
-        rv.setLayoutManager(new LinearLayoutManager(this));
-        rv.setAdapter(adapter);
-
+        setSupportActionBar(binding.meetingsToolbar);
     }
 
     // Start activity to create new meeting when user clicks on fab
     private void addMeeting() {
-        FloatingActionButton fab = findViewById(R.id.add_meeting_fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        binding.addMeetingFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    Intent addMeetingActivity = new Intent(MeetingsActivity.this,
+                    Intent addMeetingIntent = new Intent(getApplicationContext(),
                             AddMeetingActivity.class);
-                    startActivity(addMeetingActivity);
+                    startActivity(addMeetingIntent);
             }
         });
+    }
+
+    @Override
+    public void onMeetingClicked(int position) {
+        Intent meetingDetailsIntent = new Intent(getApplicationContext(),
+                MeetingDetailsActivity.class);
+        String MEETING = "meeting";
+        meetingDetailsIntent.putExtra(MEETING, meetings.get(position));
+        startActivity(meetingDetailsIntent);
+    }
+
+    @Override
+    public void onDeleteBtnClicked(int position) {
+        meetings.remove(position);
+        adapter.notifyItemRemoved(position);
     }
 }

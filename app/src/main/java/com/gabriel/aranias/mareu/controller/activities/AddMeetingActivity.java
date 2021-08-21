@@ -2,19 +2,22 @@ package com.gabriel.aranias.mareu.controller.activities;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import android.os.Bundle;
 
 import com.gabriel.aranias.mareu.R;
 import com.gabriel.aranias.mareu.controller.fragments.AddMeetingFragment;
+import com.gabriel.aranias.mareu.databinding.ActivityAddMeetingBinding;
 
 public class AddMeetingActivity extends AppCompatActivity {
+
+    private ActivityAddMeetingBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_meeting);
+        binding = ActivityAddMeetingBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         configureToolbar();
         addFragment();
@@ -22,8 +25,7 @@ public class AddMeetingActivity extends AppCompatActivity {
 
     // Set toolbar w/ arrow back
     private void configureToolbar() {
-        Toolbar toolbar = findViewById(R.id.add_meeting_toolbar);
-        setSupportActionBar(toolbar);
+        setSupportActionBar(binding.addMeetingToolbar);
         ActionBar ab = getSupportActionBar();
         assert ab != null;
         ab.setDisplayHomeAsUpEnabled(true);
