@@ -8,7 +8,8 @@
     <color name="blue_700">#1976D2</color>
     <color name="cyan_200">#80DEEA</color>
     <color name="cyan_700">#0097A7</color>
-    <color name="field">#616161</color>
+    <color name="field">#607D8B</color>
+    <color name="bckgrnd">#E3F2FD</color>
 
     <color name="bowser">#FF5722</color>
     <color name="harmonie">#FFC107</color>

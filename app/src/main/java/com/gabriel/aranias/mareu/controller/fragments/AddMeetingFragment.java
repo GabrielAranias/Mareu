@@ -1,11 +1,13 @@
 package com.gabriel.aranias.mareu.controller.fragments;
 
+import android.annotation.SuppressLint;
 import android.app.TimePickerDialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -18,18 +20,21 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.gabriel.aranias.mareu.R;
-import com.gabriel.aranias.mareu.controller.activities.MeetingsActivity;
 import com.gabriel.aranias.mareu.controller.adapter.RoomSpinnerAdapter;
 import com.gabriel.aranias.mareu.databinding.FragmentAddMeetingBinding;
 import com.gabriel.aranias.mareu.di.DI;
+import com.gabriel.aranias.mareu.model.Attendee;
 import com.gabriel.aranias.mareu.model.Meeting;
 import com.gabriel.aranias.mareu.model.Room;
 import com.gabriel.aranias.mareu.service.MeetingApiService;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -41,6 +46,7 @@ public class AddMeetingFragment extends Fragment implements AdapterView.OnItemSe
     private FragmentAddMeetingBinding binding;
     private ArrayList<Room> rooms;
     private int tHour, tMinute;
+    private final List<Attendee> attendees = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -51,14 +57,18 @@ public class AddMeetingFragment extends Fragment implements AdapterView.OnItemSe
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentAddMeetingBinding.inflate(inflater, container, false);
-        View view = binding.getRoot();
+        return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         initRoomList();
         setRoomSpinner();
         setTimePicker();
+        addAttendees();
         checkMeeting();
-
-        return view;
     }
 
     // Init the list of meeting rooms with their respective names and icons
@@ -76,7 +86,7 @@ public class AddMeetingFragment extends Fragment implements AdapterView.OnItemSe
         rooms.add(new Room("Yoshi", R.drawable.yoshi));
     }
 
-    // Set the spinner allowing users to choose a meeting room
+    // Set the spinner allowing user to choose a meeting room
     private void setRoomSpinner() {
         Spinner spinner = binding.roomSpinner;
         RoomSpinnerAdapter adapter = new RoomSpinnerAdapter(this.getActivity(), rooms);
@@ -104,7 +114,7 @@ public class AddMeetingFragment extends Fragment implements AdapterView.OnItemSe
     public void onNothingSelected(AdapterView<?> parent) {
     }
 
-    // Set the time picker allowing users to choose a meeting time
+    // Set the time picker allowing user to choose a meeting time
     private void setTimePicker() {
         TextView timePicker = binding.timePicker;
 
@@ -137,6 +147,32 @@ public class AddMeetingFragment extends Fragment implements AdapterView.OnItemSe
         });
     }
 
+    // Set the ChipGroup allowing user to add/remove attendees to/from a meeting
+    private void addAttendees() {
+        binding.addAttendeeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ChipGroup chipGroup = binding.attendeesChipGroup;
+                String[] emails = Objects.requireNonNull(binding.attendeesEt.getText()).toString()
+                        .split(" ");
+                LayoutInflater inflater = LayoutInflater.from(getContext());
+                for (String email : emails) {
+                    @SuppressLint("InflateParams") Chip chip = (Chip) inflater
+                            .inflate(R.layout.attendee_chip_item, null, false);
+                    chip.setText(email);
+                    chip.setOnCloseIconClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                           chipGroup.removeView(v);
+                        }
+                    });
+                    attendees.add(new Attendee(chip.getText().toString()));
+                    chipGroup.addView(chip);
+                }
+            }
+        });
+    }
+
     // Add meeting w/ details to existing list when user clicks on fab
     private void checkMeeting() {
         MeetingApiService service = DI.getMeetingApiService();
@@ -145,13 +181,11 @@ public class AddMeetingFragment extends Fragment implements AdapterView.OnItemSe
             public void onClick(View v) {
                 Meeting meeting = new Meeting((Room) binding.roomSpinner.getSelectedItem(),
                         Objects.requireNonNull(binding.topicEt.getText()).toString(),
-                        binding.timePicker.getText().toString(),
-                        Objects.requireNonNull(binding.attendeesEt.getText()).toString());
+                        binding.timePicker.getText().toString(), attendees);
 
                 service.createMeeting(meeting);
                 Toast.makeText(getActivity(),"Réunion enregistrée", Toast.LENGTH_SHORT).show();
-                MeetingsActivity.binding.meetingsList.getAdapter().notifyDataSetChanged();
-                //requireActivity().finish();
+                requireActivity().finish();
             }
         });
     }

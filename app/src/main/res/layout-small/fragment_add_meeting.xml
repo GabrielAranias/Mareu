@@ -31,6 +31,7 @@
                     android:id="@+id/topic_et"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:backgroundTint="@color/bckgrnd"
                     android:drawablePadding="8dp"
                     android:gravity="center_vertical"
                     android:hint="@string/meeting_topic"
@@ -59,6 +60,7 @@
                     android:id="@+id/attendees_et"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:backgroundTint="@color/bckgrnd"
                     android:drawablePadding="8dp"
                     android:gravity="center_vertical"
                     android:hint="@string/meeting_attendees"
@@ -72,17 +74,50 @@
                     app:drawableStartCompat="@drawable/baseline_groups_black_24"
                     app:drawableTint="@color/field" />
 
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/add_attendee_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="2dp"
+                    android:backgroundTint="#e2dddc"
+                    android:minWidth="48dp"
+                    android:minHeight="48dp"
+                    android:text="@string/add"
+                    android:textColor="@color/field"
+                    android:textSize="12sp"
+                    app:backgroundTint="@color/bckgrnd" />
+
             </com.google.android.material.textfield.TextInputLayout>
+
+            <FrameLayout
+                android:id="@+id/chip_group_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="2dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/attendees_til">
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/attendees_chip_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:chipSpacingVertical="2dp" />
+
+            </FrameLayout>
 
             <FrameLayout
                 android:id="@+id/time_layout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="2dp"
-                android:background="#e2dddc"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="2dp"
+                android:background="@color/bckgrnd"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/attendees_til">
+                app:layout_constraintTop_toBottomOf="@id/chip_group_layout">
 
                 <TextView
                     android:id="@+id/time_picker"
@@ -109,7 +144,7 @@
                 android:layout_marginStart="2dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="2dp"
-                android:background="#e2dddc"
+                android:background="@color/bckgrnd"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/time_layout">

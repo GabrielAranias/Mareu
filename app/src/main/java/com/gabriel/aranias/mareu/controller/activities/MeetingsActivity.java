@@ -2,6 +2,7 @@ package com.gabriel.aranias.mareu.controller.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -20,7 +21,7 @@ import java.util.List;
 
 public class MeetingsActivity extends AppCompatActivity implements onMeetingClickListener {
 
-    public static ActivityMeetingsBinding binding;
+    private ActivityMeetingsBinding binding;
     private MeetingRecyclerViewAdapter adapter;
     private List<Meeting> meetings;
     private MeetingApiService service;
@@ -40,10 +41,12 @@ public class MeetingsActivity extends AppCompatActivity implements onMeetingClic
     }
 
     // Init list of meetings
+    @SuppressLint("NotifyDataSetChanged")
     private void initMeetingList() {
         meetings = new ArrayList<>();
         meetings.addAll(service.getMeetings());
         adapter.updateMeetingList(meetings, this);
+        adapter.notifyDataSetChanged();
     }
 
     // Set customized toolbar
@@ -63,26 +66,33 @@ public class MeetingsActivity extends AppCompatActivity implements onMeetingClic
         binding.addMeetingFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    Intent addMeetingIntent = new Intent(getApplicationContext(),
+                    Intent addMeetingIntent = new Intent(MeetingsActivity.this,
                             AddMeetingActivity.class);
                     startActivity(addMeetingIntent);
             }
         });
     }
 
+    // Display meeting details when user clicks on item
     @Override
     public void onMeetingClicked(int position) {
-        Intent meetingDetailsIntent = new Intent(getApplicationContext(),
+        Intent meetingDetailsIntent = new Intent(MeetingsActivity.this,
                 MeetingDetailsActivity.class);
 
-        meetingDetailsIntent.putExtra("meeting", meetings.get(position));
+        meetingDetailsIntent.putExtra("meeting", position);
         startActivity(meetingDetailsIntent);
     }
 
+    //  Remove meeting from the list when user clicks on btn
     @Override
     public void onDeleteBtnClicked(int position) {
-        meetings.remove(position);
-        adapter.notifyItemRemoved(position);
-        adapter.notifyDataSetChanged();
+        service.deleteMeeting(meetings.get(position));
+        initMeetingList();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initMeetingList();
     }
 }

@@ -9,7 +9,11 @@
     <string name="time_filter">Filter meetings by hour</string>
     <string name="meeting_topic">Sujet</string>
     <string name="meeting_attendees">Participants</string>
+    <string name="meeting_attendees2">Voir les participants</string>
+    <string name="add">Ajouter</string>
     <string name="meeting_time">Heure</string>
     <string name="room_spinner">Spinner to choose a meeting room</string>
     <string name="example">Example</string>
+    <string name="hide">MASQUER LES PARTICIPANTS</string>
+    <string name="show">VOIR LES PARTICIPANTS</string>
 </resources>

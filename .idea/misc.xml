@@ -7,6 +7,7 @@
         <entry key="..\:/Users/MSI/Documents/Formation/P4/Mareu/app/src/main/res/drawable/baseline_arrow_back_24.xml" value="0.18055555555555555" />
         <entry key="..\:/Users/MSI/Documents/Formation/P4/Mareu/app/src/main/res/drawable/baseline_delete_24.xml" value="0.18388888888888888" />
         <entry key="..\:/Users/MSI/Documents/Formation/P4/Mareu/app/src/main/res/drawable/baseline_radio_button_unchecked_24.xml" value="0.18388888888888888" />
+        <entry key="..\:/Users/MSI/Documents/Formation/P4/Mareu/app/src/main/res/drawable/material_btn_color.xml" value="0.2703125" />
         <entry key="..\:/Users/MSI/Documents/Formation/P4/Mareu/app/src/main/res/layout-land/activity_add_meeting.xml" value="0.2140625" />
         <entry key="..\:/Users/MSI/Documents/Formation/P4/Mareu/app/src/main/res/layout-land/activity_meeting_details.xml" value="0.22900390625" />
         <entry key="..\:/Users/MSI/Documents/Formation/P4/Mareu/app/src/main/res/layout-land/activity_meetings.xml" value="0.39316239316239315" />
@@ -27,7 +28,7 @@
         <entry key="..\:/Users/MSI/Documents/Formation/P4/Mareu/app/src/main/res/layout-small/meeting_item.xml" value="1.0" />
         <entry key="..\:/Users/MSI/Documents/Formation/P4/Mareu/app/src/main/res/layout-sw600dp-land/activity_meetings.xml" value="0.26318359375" />
         <entry key="..\:/Users/MSI/Documents/Formation/P4/Mareu/app/src/main/res/layout-sw600dp-land/fragment_add_meeting.xml" value="0.264" />
-        <entry key="..\:/Users/MSI/Documents/Formation/P4/Mareu/app/src/main/res/layout-sw600dp-land/fragment_meeting_details.xml" value="0.26318359375" />
+        <entry key="..\:/Users/MSI/Documents/Formation/P4/Mareu/app/src/main/res/layout-sw600dp-land/fragment_meeting_details.xml" value="0.176" />
         <entry key="..\:/Users/MSI/Documents/Formation/P4/Mareu/app/src/main/res/layout-sw600dp-land/meeting_item.xml" value="0.2421875" />
         <entry key="..\:/Users/MSI/Documents/Formation/P4/Mareu/app/src/main/res/layout-sw600dp/activity_add_meeting.xml" value="0.23828125" />
         <entry key="..\:/Users/MSI/Documents/Formation/P4/Mareu/app/src/main/res/layout-sw600dp/activity_meetings.xml" value="0.2" />
@@ -42,8 +43,9 @@
         <entry key="..\:/Users/MSI/Documents/Formation/P4/Mareu/app/src/main/res/layout/activity_main.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/MSI/Documents/Formation/P4/Mareu/app/src/main/res/layout/activity_meeting_details.xml" value="0.190625" />
         <entry key="..\:/Users/MSI/Documents/Formation/P4/Mareu/app/src/main/res/layout/activity_meetings.xml" value="0.264" />
+        <entry key="..\:/Users/MSI/Documents/Formation/P4/Mareu/app/src/main/res/layout/attendee_chip_item.xml" value="0.536" />
         <entry key="..\:/Users/MSI/Documents/Formation/P4/Mareu/app/src/main/res/layout/color_spinner_layout.xml" value="0.264" />
-        <entry key="..\:/Users/MSI/Documents/Formation/P4/Mareu/app/src/main/res/layout/fragment_add_meeting.xml" value="0.5145018915510718" />
+        <entry key="..\:/Users/MSI/Documents/Formation/P4/Mareu/app/src/main/res/layout/fragment_add_meeting.xml" value="0.4" />
         <entry key="..\:/Users/MSI/Documents/Formation/P4/Mareu/app/src/main/res/layout/fragment_meeting_details.xml" value="0.4444444444444444" />
         <entry key="..\:/Users/MSI/Documents/Formation/P4/Mareu/app/src/main/res/layout/meeting_item.xml" value="0.4913151364764268" />
         <entry key="..\:/Users/MSI/Documents/Formation/P4/Mareu/app/src/main/res/layout/room_spinner_row.xml" value="0.4" />

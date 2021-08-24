@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.gabriel.aranias.mareu.databinding.MeetingItemBinding;
+import com.gabriel.aranias.mareu.model.Attendee;
 import com.gabriel.aranias.mareu.model.Meeting;
 
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ public class MeetingRecyclerViewAdapter extends RecyclerView.Adapter<MeetingRecy
 
     private List<Meeting> meetings = new ArrayList<>();
     private onMeetingClickListener clickListener;
+    private Meeting currentMeeting;
 
     public void updateMeetingList(List<Meeting> meetings, onMeetingClickListener listener) {
         this.meetings = meetings;
@@ -64,11 +66,25 @@ public class MeetingRecyclerViewAdapter extends RecyclerView.Adapter<MeetingRecy
             });
         }
 
+        // Display meeting list
         public void bindView(Meeting meeting) {
+            currentMeeting = meeting;
             binding.roomIconItem.setImageResource(meeting.getRoom().getRoomIcon());
             binding.meetingInfoItem.setText(String.format("%s - %s - %s", meeting.getTopic(),
                     meeting.getTime(), meeting.getRoom().getRoomName()));
-            binding.meetingAttendeesItem.setText(meeting.getAttendees());
+            binding.meetingAttendeesItem.setText(getMeetingAttendees());
+        }
+
+        //Display properly list of attendees
+        private StringBuilder getMeetingAttendees() {
+            StringBuilder sb = new StringBuilder();
+            for (Attendee attendee : currentMeeting.getAttendees()) {
+                sb.append(attendee.getAttendee());
+                if (currentMeeting.getAttendees().size()-1 != currentMeeting.getAttendees().indexOf(attendee)) {
+                    sb.append(", ");
+                }
+            }
+            return sb;
         }
     }
 }
