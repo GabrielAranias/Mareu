@@ -1,6 +1,8 @@
 package com.gabriel.aranias.mareu.model;
 
-public class Attendee {
+import java.io.Serializable;
+
+public class Attendee implements Serializable {
 
     private final String attendee;
 
@@ -9,6 +11,6 @@ public class Attendee {
     }
 
     public String getAttendee() {
-        return  attendee;
+        return attendee;
     }
 }

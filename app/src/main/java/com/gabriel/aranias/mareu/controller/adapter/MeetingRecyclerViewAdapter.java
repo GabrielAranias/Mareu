@@ -1,8 +1,10 @@
 package com.gabriel.aranias.mareu.controller.adapter;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,17 +14,20 @@ import com.gabriel.aranias.mareu.model.Attendee;
 import com.gabriel.aranias.mareu.model.Meeting;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
-public class MeetingRecyclerViewAdapter extends RecyclerView.Adapter<MeetingRecyclerViewAdapter.ViewHolder> {
+public class MeetingRecyclerViewAdapter extends RecyclerView.Adapter<MeetingRecyclerViewAdapter.ViewHolder>
+        implements Filterable {
 
-    private List<Meeting> meetings = new ArrayList<>();
-    private onMeetingClickListener clickListener;
+    private List<Meeting> meetings, meetingsAll;
+    private onMeetingClickListener listener;
     private Meeting currentMeeting;
 
     public void updateMeetingList(List<Meeting> meetings, onMeetingClickListener listener) {
         this.meetings = meetings;
-        this.clickListener = listener;
+        this.listener = listener;
+        meetingsAll = new ArrayList<>(meetings);
     }
 
     @NonNull
@@ -43,6 +48,77 @@ public class MeetingRecyclerViewAdapter extends RecyclerView.Adapter<MeetingRecy
         return meetings.size();
     }
 
+    @Override
+    public Filter getFilter() {
+        return roomFilter;
+    }
+
+    public Filter getTimeFilter() {
+        return timeFilter;
+    }
+
+    // Set room filter allowing user to search for meetings in a specific room
+    private final Filter roomFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<Meeting> filteredList = new ArrayList<>();
+
+            if (constraint == null || constraint.length() == 0) {
+                filteredList.addAll(meetingsAll);
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+                for (Meeting filteredMeeting : meetingsAll) {
+                    if (filteredMeeting.getRoom().getRoomName().toLowerCase().contains(filterPattern)) {
+                        filteredList.add(filteredMeeting);
+                    }
+                }
+            }
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+
+            return results;
+        }
+
+        @SuppressLint("NotifyDataSetChanged")
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            meetings.clear();
+            meetings.addAll((Collection<? extends Meeting>) results.values);
+            notifyDataSetChanged();
+        }
+    };
+
+    // Set time filter allowing user to search for meetings at a specific time
+    private final Filter timeFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<Meeting> filteredList = new ArrayList<>();
+
+            if (constraint == null || constraint.length() == 0) {
+                filteredList.addAll(meetingsAll);
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+                for (Meeting filteredMeeting : meetingsAll) {
+                    if (filteredMeeting.getTime().toLowerCase().startsWith(filterPattern)) {
+                        filteredList.add(filteredMeeting);
+                    }
+                }
+            }
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+
+            return results;
+        }
+
+        @SuppressLint("NotifyDataSetChanged")
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            meetings.clear();
+            meetings.addAll((Collection<? extends Meeting>) results.values);
+            notifyDataSetChanged();
+        }
+    };
+
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         private final MeetingItemBinding binding;
@@ -51,19 +127,13 @@ public class MeetingRecyclerViewAdapter extends RecyclerView.Adapter<MeetingRecy
             super(binding.getRoot());
             this.binding = binding;
 
-            this.binding.meetingInfoItem.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    clickListener.onMeetingClicked(getAdapterPosition());
-                }
-            });
+            this.binding.meetingInfoItem.setOnClickListener(v ->
 
-            this.binding.deleteBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    clickListener.onDeleteBtnClicked(getAdapterPosition());
-                }
-            });
+                    listener.onMeetingClicked(meetings.get(getAdapterPosition())));
+
+            this.binding.deleteBtn.setOnClickListener(v ->
+
+                    listener.onDeleteBtnClicked(meetings.get(getAdapterPosition())));
         }
 
         // Display meeting list
@@ -80,7 +150,8 @@ public class MeetingRecyclerViewAdapter extends RecyclerView.Adapter<MeetingRecy
             StringBuilder sb = new StringBuilder();
             for (Attendee attendee : currentMeeting.getAttendees()) {
                 sb.append(attendee.getAttendee());
-                if (currentMeeting.getAttendees().size()-1 != currentMeeting.getAttendees().indexOf(attendee)) {
+                if (currentMeeting.getAttendees().size() - 1 != currentMeeting.getAttendees()
+                        .indexOf(attendee)) {
                     sb.append(", ");
                 }
             }

@@ -1,8 +1,10 @@
 package com.gabriel.aranias.mareu.controller.adapter;
 
+import com.gabriel.aranias.mareu.model.Meeting;
+
 public interface onMeetingClickListener {
 
-    void onMeetingClicked(int position);
+    void onMeetingClicked(Meeting meeting);
 
-    void onDeleteBtnClicked(int position);
+    void onDeleteBtnClicked(Meeting meeting);
 }

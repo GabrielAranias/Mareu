@@ -1,6 +1,8 @@
 package com.gabriel.aranias.mareu.model;
 
-public class Room {
+import java.io.Serializable;
+
+public class Room implements Serializable {
     private final String roomName;
     private final int roomIcon;
 
@@ -12,6 +14,7 @@ public class Room {
     public String getRoomName() {
         return roomName;
     }
+
     public int getRoomIcon() {
         return roomIcon;
     }

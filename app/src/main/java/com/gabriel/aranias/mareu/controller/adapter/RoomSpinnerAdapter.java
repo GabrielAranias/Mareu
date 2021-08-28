@@ -27,6 +27,7 @@ public class RoomSpinnerAdapter extends ArrayAdapter<Room> {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         return initView(position, convertView, parent);
     }
+
     @Override
     public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         return initView(position, convertView, parent);
@@ -34,7 +35,8 @@ public class RoomSpinnerAdapter extends ArrayAdapter<Room> {
 
     private View initView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.room_spinner_row, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.room_spinner_row,
+                    parent, false);
         }
 
         ImageView roomIcon = convertView.findViewById(R.id.room_iv);

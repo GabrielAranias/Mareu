@@ -19,8 +19,6 @@ public class MeetingDetailsActivity extends AppCompatActivity {
         binding = ActivityMeetingDetailsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        int mPosition = getIntent().getIntExtra("meeting", 0);
-
         configureToolbar();
         addFragment();
     }

@@ -1,12 +1,15 @@
 package com.gabriel.aranias.mareu.controller.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.View;
+import android.view.MenuItem;
+import android.view.inputmethod.EditorInfo;
+import android.widget.Toast;
 
 import com.gabriel.aranias.mareu.R;
 import com.gabriel.aranias.mareu.controller.adapter.MeetingRecyclerViewAdapter;
@@ -23,8 +26,8 @@ public class MeetingsActivity extends AppCompatActivity implements onMeetingClic
 
     private ActivityMeetingsBinding binding;
     private MeetingRecyclerViewAdapter adapter;
-    private List<Meeting> meetings;
     private MeetingApiService service;
+    public static final String EXTRA_MEETING = "meeting";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,51 +46,91 @@ public class MeetingsActivity extends AppCompatActivity implements onMeetingClic
     // Init list of meetings
     @SuppressLint("NotifyDataSetChanged")
     private void initMeetingList() {
-        meetings = new ArrayList<>();
-        meetings.addAll(service.getMeetings());
+        List<Meeting> meetings = new ArrayList<>(service.getMeetings());
         adapter.updateMeetingList(meetings, this);
         adapter.notifyDataSetChanged();
     }
 
-    // Set customized toolbar
-    // TODO: 10/08/2021 onOptionsItemSelected
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_activity_meetings, menu);
+
+        setRoomFilter(menu);
+        setTimeFilter(menu);
+
         return true;
     }
 
+    // Set room filter in toolbar
+    private void setRoomFilter(Menu menu) {
+        MenuItem roomFilter = menu.findItem(R.id.meetings_menu_room_filter);
+        SearchView sv = (SearchView) roomFilter.getActionView();
+        sv.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        sv.setQueryHint(getString(R.string.room_search_txt));
+        sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                adapter.getFilter().filter(newText);
+                return false;
+            }
+        });
+    }
+
+    // Set time filter in toolbar
+    private void setTimeFilter(Menu menu) {
+        MenuItem timeFilter = menu.findItem(R.id.meetings_menu_time_filter);
+        SearchView sv = (SearchView) timeFilter.getActionView();
+        sv.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        sv.setQueryHint(getString(R.string.time_search_txt));
+        sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                adapter.getTimeFilter().filter(newText);
+                return false;
+            }
+        });
+    }
+
+    // Set customized toolbar
     private void configureToolbar() {
         setSupportActionBar(binding.meetingsToolbar);
     }
 
     // Start activity to create new meeting when user clicks on fab
     private void addMeeting() {
-        binding.addMeetingFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                    Intent addMeetingIntent = new Intent(MeetingsActivity.this,
-                            AddMeetingActivity.class);
-                    startActivity(addMeetingIntent);
-            }
+        binding.addMeetingFab.setOnClickListener(v -> {
+            Intent addMeetingIntent = new Intent(MeetingsActivity.this,
+                    AddMeetingActivity.class);
+            startActivity(addMeetingIntent);
         });
     }
 
     // Display meeting details when user clicks on item
     @Override
-    public void onMeetingClicked(int position) {
+    public void onMeetingClicked(Meeting meeting) {
         Intent meetingDetailsIntent = new Intent(MeetingsActivity.this,
                 MeetingDetailsActivity.class);
 
-        meetingDetailsIntent.putExtra("meeting", position);
+        meetingDetailsIntent.putExtra(EXTRA_MEETING, meeting);
         startActivity(meetingDetailsIntent);
     }
 
     //  Remove meeting from the list when user clicks on btn
     @Override
-    public void onDeleteBtnClicked(int position) {
-        service.deleteMeeting(meetings.get(position));
+    public void onDeleteBtnClicked(Meeting meeting) {
+        service.deleteMeeting(meeting);
         initMeetingList();
+        Toast.makeText(this, R.string.deleted, Toast.LENGTH_SHORT).show();
     }
 
     @Override

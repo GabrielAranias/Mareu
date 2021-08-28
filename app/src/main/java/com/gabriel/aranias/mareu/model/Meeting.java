@@ -1,8 +1,9 @@
 package com.gabriel.aranias.mareu.model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Meeting {
+public class Meeting implements Serializable {
 
     private final Room room;
     private final String topic;
@@ -19,12 +20,15 @@ public class Meeting {
     public Room getRoom() {
         return room;
     }
+
     public String getTopic() {
         return topic;
     }
+
     public String getTime() {
         return time;
     }
+
     public List<Attendee> getAttendees() {
         return attendees;
     }

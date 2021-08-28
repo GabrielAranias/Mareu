@@ -10,13 +10,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.gabriel.aranias.mareu.R;
@@ -29,6 +30,7 @@ import com.gabriel.aranias.mareu.model.Room;
 import com.gabriel.aranias.mareu.service.MeetingApiService;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -69,6 +71,7 @@ public class AddMeetingFragment extends Fragment implements AdapterView.OnItemSe
         setTimePicker();
         addAttendees();
         checkMeeting();
+        disableFabIfFieldIsEmpty();
     }
 
     // Init the list of meeting rooms with their respective names and icons
@@ -96,7 +99,7 @@ public class AddMeetingFragment extends Fragment implements AdapterView.OnItemSe
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Room clickedRoom = (Room) parent.getItemAtPosition(position);
                 String clickedRoomName = clickedRoom.getRoomName();
-                Toast.makeText(getActivity(),"Salle '" + clickedRoomName + "' sélectionnée",
+                Toast.makeText(getActivity(), "Salle '" + clickedRoomName + "' sélectionnée",
                         Toast.LENGTH_SHORT).show();
             }
 
@@ -118,17 +121,13 @@ public class AddMeetingFragment extends Fragment implements AdapterView.OnItemSe
     private void setTimePicker() {
         TextView timePicker = binding.timePicker;
 
-        Objects.requireNonNull(timePicker).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                TimePickerDialog tpd = new TimePickerDialog(getActivity(),
-                        android.R.style.Theme_Holo_Light_Dialog_MinWidth,
-                        new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+        Objects.requireNonNull(timePicker).setOnClickListener(view -> {
+            TimePickerDialog tpd = new TimePickerDialog(getActivity(),
+                    android.R.style.Theme_Holo_Light_Dialog_MinWidth,
+                    (view1, hourOfDay, minute) -> {
                         tHour = hourOfDay;
                         tMinute = minute;
-                        String time = String.format(Locale.FRANCE,"%02d:%02d", tHour, tMinute);
+                        String time = String.format(Locale.FRANCE, "%02d:%02d", tHour, tMinute);
                         SimpleDateFormat f24Hours = new SimpleDateFormat(time, Locale.FRANCE);
                         try {
                             Date date = f24Hours.parse(time);
@@ -137,38 +136,29 @@ public class AddMeetingFragment extends Fragment implements AdapterView.OnItemSe
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
-                    }
-                }, 12, 0, true
-                );
-                tpd.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                tpd.updateTime(tHour, tMinute);
-                tpd.show();
-            }
+                    }, 12, 0, true
+            );
+            tpd.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            tpd.updateTime(tHour, tMinute);
+            tpd.show();
         });
     }
 
     // Set the ChipGroup allowing user to add/remove attendees to/from a meeting
     private void addAttendees() {
-        binding.addAttendeeBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ChipGroup chipGroup = binding.attendeesChipGroup;
-                String[] emails = Objects.requireNonNull(binding.attendeesEt.getText()).toString()
-                        .split(" ");
-                LayoutInflater inflater = LayoutInflater.from(getContext());
-                for (String email : emails) {
-                    @SuppressLint("InflateParams") Chip chip = (Chip) inflater
-                            .inflate(R.layout.attendee_chip_item, null, false);
-                    chip.setText(email);
-                    chip.setOnCloseIconClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                           chipGroup.removeView(v);
-                        }
-                    });
-                    attendees.add(new Attendee(chip.getText().toString()));
-                    chipGroup.addView(chip);
-                }
+        binding.addAttendeeBtn.setOnClickListener(v -> {
+            ChipGroup chipGroup = binding.attendeesChipGroup;
+            String[] emails = Objects.requireNonNull(binding.attendeesEt.getText()).toString()
+                    .split(" ");
+            LayoutInflater inflater = LayoutInflater.from(getContext());
+            for (String email : emails) {
+                @SuppressLint("InflateParams") Chip chip = (Chip) inflater
+                        .inflate(R.layout.attendee_chip_item, null, false);
+                chip.setText(email);
+                chip.setOnCloseIconClickListener(chipGroup::removeView);
+                attendees.add(new Attendee(chip.getText().toString()));
+                chipGroup.addView(chip);
+                binding.attendeesEt.setText("");
             }
         });
     }
@@ -176,17 +166,42 @@ public class AddMeetingFragment extends Fragment implements AdapterView.OnItemSe
     // Add meeting w/ details to existing list when user clicks on fab
     private void checkMeeting() {
         MeetingApiService service = DI.getMeetingApiService();
-        binding.checkAddMeetingFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        FloatingActionButton fab = binding.checkAddMeetingFab;
+        fab.setActivated(false);
+        fab.setOnClickListener(v -> {
+            if (!fab.isActivated()) {
+                Toast.makeText(getActivity(), R.string.fab_disabled, Toast.LENGTH_SHORT).show();
+            } else {
                 Meeting meeting = new Meeting((Room) binding.roomSpinner.getSelectedItem(),
                         Objects.requireNonNull(binding.topicEt.getText()).toString(),
                         binding.timePicker.getText().toString(), attendees);
 
                 service.createMeeting(meeting);
-                Toast.makeText(getActivity(),"Réunion enregistrée", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), R.string.saved, Toast.LENGTH_SHORT).show();
                 requireActivity().finish();
             }
         });
     }
+
+    // Disable fab to create a new meeting if field for meeting time is empty
+    private void disableFabIfFieldIsEmpty() {
+        binding.timePicker.addTextChangedListener(tw);
+    }
+
+    private final TextWatcher tw = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            String timeInput = binding.timePicker.getText().toString();
+
+            binding.checkAddMeetingFab.setActivated(!timeInput.isEmpty());
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+        }
+    };
 }
