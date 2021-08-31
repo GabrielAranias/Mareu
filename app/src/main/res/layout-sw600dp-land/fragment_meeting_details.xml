@@ -2,6 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/meeting_details_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
@@ -38,8 +39,9 @@
             app:layout_constraintStart_toEndOf="@id/room_icon"
             app:layout_constraintTop_toTopOf="@id/room_icon" />
 
-        <com.google.android.material.button.MaterialButton
+        <Button
             android:id="@+id/meeting_attendees"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="36dp"

@@ -17,12 +17,14 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/topic_til"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="2dp"
                 android:layout_marginTop="52dp"
                 android:layout_marginEnd="2dp"
                 android:layout_marginBottom="2dp"
+                app:boxBackgroundColor="@color/bckgrnd"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -31,7 +33,6 @@
                     android:id="@+id/topic_et"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="@color/bckgrnd"
                     android:drawablePadding="8dp"
                     android:gravity="center_vertical"
                     android:hint="@string/meeting_topic"
@@ -42,16 +43,18 @@
                     android:padding="8dp"
                     android:textColor="@color/field"
                     android:textSize="16sp"
-                    app:drawableStartCompat="@drawable/baseline_topic_black_24"
+                    app:drawableStartCompat="@drawable/ic_baseline_topic_24"
                     app:drawableTint="@color/field" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/attendees_til"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
+                app:boxBackgroundColor="@color/bckgrnd"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/topic_til">
@@ -60,7 +63,6 @@
                     android:id="@+id/attendees_et"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="@color/bckgrnd"
                     android:drawablePadding="8dp"
                     android:gravity="center_vertical"
                     android:hint="@string/meeting_attendees"
@@ -71,22 +73,23 @@
                     android:padding="8dp"
                     android:textColor="@color/field"
                     android:textSize="16sp"
-                    app:drawableStartCompat="@drawable/baseline_groups_black_24"
+                    app:drawableStartCompat="@drawable/ic_baseline_group_24"
                     app:drawableTint="@color/field" />
 
-                <androidx.appcompat.widget.AppCompatButton
+                <Button
                     android:id="@+id/add_attendee_btn"
+                    style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="2dp"
-                    android:backgroundTint="#e2dddc"
+                    android:backgroundTint="@color/bckgrnd"
                     android:minWidth="48dp"
                     android:minHeight="48dp"
                     android:text="@string/add"
-                    android:textColor="@color/field"
+                    android:textColor="@color/blue_500"
                     android:textSize="12sp"
-                    app:backgroundTint="@color/bckgrnd" />
+                    app:icon="@drawable/ic_baseline_add_24" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -114,7 +117,7 @@
                 android:layout_marginStart="2dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="2dp"
-                android:background="@color/bckgrnd"
+                android:background="@drawable/back_fields_drawable"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/chip_group_layout">
@@ -132,7 +135,7 @@
                     android:textColor="@color/field"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    app:drawableStartCompat="@drawable/baseline_access_time_black_24"
+                    app:drawableStartCompat="@drawable/ic_baseline_access_time_24"
                     app:drawableTint="@color/field" />
 
             </FrameLayout>
@@ -144,7 +147,7 @@
                 android:layout_marginStart="2dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="2dp"
-                android:background="@color/bckgrnd"
+                android:background="@drawable/back_fields_drawable"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/time_layout">
@@ -170,7 +173,7 @@
         android:layout_gravity="end|bottom"
         android:layout_margin="4dp"
         android:contentDescription="@string/add_meeting_fab"
-        android:src="@drawable/baseline_check_black_24"
+        android:src="@drawable/ic_baseline_check_24"
         app:backgroundTint="@color/red_A400"
         app:tint="@color/white" />
 

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/meeting_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
@@ -14,14 +15,17 @@
 
         <ImageView
             android:id="@+id/room_icon_item"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:layout_margin="8dp"
+            android:background="@drawable/circle_room_drawable"
             android:contentDescription="@string/room_icon"
             android:src="@drawable/mario"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHeight_percent="1"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.2" />
 
         <TextView
             android:id="@+id/meeting_info_item"
@@ -67,7 +71,7 @@
             android:minWidth="48dp"
             android:minHeight="48dp"
             android:padding="8dp"
-            android:src="@drawable/baseline_delete_24"
+            android:src="@drawable/ic_baseline_delete_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"

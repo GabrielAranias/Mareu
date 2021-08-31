@@ -17,7 +17,9 @@
     <string name="saved">"Réunion enregistrée</string>
     <string name="hide">MASQUER LES PARTICIPANTS</string>
     <string name="show">VOIR LES PARTICIPANTS</string>
-    <string name="fab_disabled">Veuillez choisir une heure de réunion</string>
+    <string name="topic_error">Veuillez renseigner un sujet</string>
+    <string name="attendees_error">Veuillez ajouter des participants</string>
+    <string name="time_error">Veuillez choisir une heure</string>
     <string name="room_search_txt">Filtrer par salle</string>
     <string name="time_search_txt">Filtrer par heure</string>
     <string name="deleted">Réunion supprimée</string>

@@ -8,10 +8,9 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,6 +48,7 @@ public class AddMeetingFragment extends Fragment implements AdapterView.OnItemSe
     private ArrayList<Room> rooms;
     private int tHour, tMinute;
     private final List<Attendee> attendees = new ArrayList<>();
+    private boolean clicked = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -71,7 +71,6 @@ public class AddMeetingFragment extends Fragment implements AdapterView.OnItemSe
         setTimePicker();
         addAttendees();
         checkMeeting();
-        disableFabIfFieldIsEmpty();
     }
 
     // Init the list of meeting rooms with their respective names and icons
@@ -147,61 +146,66 @@ public class AddMeetingFragment extends Fragment implements AdapterView.OnItemSe
     // Set the ChipGroup allowing user to add/remove attendees to/from a meeting
     private void addAttendees() {
         binding.addAttendeeBtn.setOnClickListener(v -> {
+            clicked = true;
+
             ChipGroup chipGroup = binding.attendeesChipGroup;
             String[] emails = Objects.requireNonNull(binding.attendeesEt.getText()).toString()
                     .split(" ");
             LayoutInflater inflater = LayoutInflater.from(getContext());
+
             for (String email : emails) {
                 @SuppressLint("InflateParams") Chip chip = (Chip) inflater
                         .inflate(R.layout.attendee_chip_item, null, false);
                 chip.setText(email);
-                chip.setOnCloseIconClickListener(chipGroup::removeView);
-                attendees.add(new Attendee(chip.getText().toString()));
+
+                Attendee addedAttendee = new Attendee(chip.getText().toString());
+                attendees.add(addedAttendee);
                 chipGroup.addView(chip);
                 binding.attendeesEt.setText("");
+
+                chip.setOnCloseIconClickListener(v1 -> {
+                            chipGroup.removeView(v1);
+                            attendees.remove(addedAttendee);
+                        }
+                );
             }
         });
     }
 
-    // Add meeting w/ details to existing list when user clicks on fab
+    // When user clicks on fab to add a new meeting...
     private void checkMeeting() {
-        MeetingApiService service = DI.getMeetingApiService();
         FloatingActionButton fab = binding.checkAddMeetingFab;
-        fab.setActivated(false);
-        fab.setOnClickListener(v -> {
-            if (!fab.isActivated()) {
-                Toast.makeText(getActivity(), R.string.fab_disabled, Toast.LENGTH_SHORT).show();
-            } else {
-                Meeting meeting = new Meeting((Room) binding.roomSpinner.getSelectedItem(),
-                        Objects.requireNonNull(binding.topicEt.getText()).toString(),
-                        binding.timePicker.getText().toString(), attendees);
-
-                service.createMeeting(meeting);
-                Toast.makeText(getActivity(), R.string.saved, Toast.LENGTH_SHORT).show();
-                requireActivity().finish();
-            }
-        });
+        fab.setOnClickListener(v -> setErrorOnSubmit());
     }
 
-    // Disable fab to create a new meeting if field for meeting time is empty
-    private void disableFabIfFieldIsEmpty() {
-        binding.timePicker.addTextChangedListener(tw);
+    // ...Set error if one of the fields to be filled is empty, else create meeting
+    private void setErrorOnSubmit() {
+        if (Objects.requireNonNull(binding.topicTil.getEditText()).getText().toString().isEmpty()) {
+            binding.topicTil.setError(getString(R.string.topic_error));
+            return;
+        }
+        if (!clicked) {
+            binding.attendeesTil.setError(getString(R.string.attendees_error));
+            return;
+        }
+        if (binding.timePicker.getText().toString().isEmpty()) {
+            binding.timePicker.setError(getString(R.string.time_error));
+            binding.timeLayout.setBackground(ContextCompat.getDrawable(requireContext(),
+                    R.drawable.back_fields_error_drawable));
+            Toast.makeText(getActivity(), R.string.time_error, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        createMeeting();
     }
 
-    private final TextWatcher tw = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-            String timeInput = binding.timePicker.getText().toString();
-
-            binding.checkAddMeetingFab.setActivated(!timeInput.isEmpty());
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-        }
-    };
+    // If all fields are filled, add meeting w/ details to existing list
+    private void createMeeting() {
+        MeetingApiService service = DI.getMeetingApiService();
+        Meeting meeting = new Meeting((Room) binding.roomSpinner.getSelectedItem(),
+                Objects.requireNonNull(binding.topicEt.getText()).toString(),
+                binding.timePicker.getText().toString(), attendees);
+        service.createMeeting(meeting);
+        Toast.makeText(getActivity(), R.string.saved, Toast.LENGTH_SHORT).show();
+        requireActivity().finish();
+    }
 }

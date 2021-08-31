@@ -16,11 +16,12 @@ import com.gabriel.aranias.mareu.model.Meeting;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 public class MeetingRecyclerViewAdapter extends RecyclerView.Adapter<MeetingRecyclerViewAdapter.ViewHolder>
         implements Filterable {
 
-    private List<Meeting> meetings, meetingsAll;
+    private List<Meeting> meetings, meetingsAll, filteredList;
     private onMeetingClickListener listener;
     private Meeting currentMeeting;
 
@@ -61,7 +62,7 @@ public class MeetingRecyclerViewAdapter extends RecyclerView.Adapter<MeetingRecy
     private final Filter roomFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
-            List<Meeting> filteredList = new ArrayList<>();
+            filteredList = new ArrayList<>();
 
             if (constraint == null || constraint.length() == 0) {
                 filteredList.addAll(meetingsAll);
@@ -92,7 +93,7 @@ public class MeetingRecyclerViewAdapter extends RecyclerView.Adapter<MeetingRecy
     private final Filter timeFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
-            List<Meeting> filteredList = new ArrayList<>();
+            filteredList = new ArrayList<>();
 
             if (constraint == null || constraint.length() == 0) {
                 filteredList.addAll(meetingsAll);
@@ -127,7 +128,7 @@ public class MeetingRecyclerViewAdapter extends RecyclerView.Adapter<MeetingRecy
             super(binding.getRoot());
             this.binding = binding;
 
-            this.binding.meetingInfoItem.setOnClickListener(v ->
+            Objects.requireNonNull(this.binding.meetingItem).setOnClickListener(v ->
 
                     listener.onMeetingClicked(meetings.get(getAdapterPosition())));
 

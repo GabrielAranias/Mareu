@@ -12,13 +12,13 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.gabriel.aranias.mareu.R;
 import com.gabriel.aranias.mareu.databinding.FragmentMeetingDetailsBinding;
 import com.gabriel.aranias.mareu.model.Attendee;
 import com.gabriel.aranias.mareu.model.Meeting;
-import com.google.android.material.button.MaterialButton;
 
 public class MeetingDetailsFragment extends Fragment {
 
@@ -60,7 +60,7 @@ public class MeetingDetailsFragment extends Fragment {
 
     // Display or hide all email addresses of meeting attendees when user clicks on btn
     private void getMeetingAttendees(Meeting meeting) {
-        MaterialButton btn = binding.meetingAttendees;
+        Button btn = binding.meetingAttendees;
         TextView tv = binding.meetingAttendeesDetails;
         tv.setVisibility(View.INVISIBLE);
         btn.setOnClickListener(v -> {

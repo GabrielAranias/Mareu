@@ -8,7 +8,7 @@
     android:clickable="false"
     android:focusable="false"
     android:text="@string/example"
-    app:chipIcon="@drawable/baseline_person_24"
+    app:chipIcon="@drawable/ic_baseline_person_24"
     app:chipIconTint="@color/field"
     app:closeIconTint="@color/field">
 

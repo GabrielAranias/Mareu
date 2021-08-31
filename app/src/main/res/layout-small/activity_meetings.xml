@@ -44,7 +44,7 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="4dp"
         android:contentDescription="@string/add_meeting_fab"
-        android:src="@drawable/baseline_add_black_18"
+        android:src="@drawable/ic_baseline_add_24"
         app:backgroundTint="@color/red_A400"
         app:tint="@color/white" />
 
