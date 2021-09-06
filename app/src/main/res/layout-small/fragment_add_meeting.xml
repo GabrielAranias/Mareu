@@ -173,6 +173,8 @@
         android:layout_gravity="end|bottom"
         android:layout_margin="4dp"
         android:contentDescription="@string/add_meeting_fab"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
         android:src="@drawable/ic_baseline_check_24"
         app:backgroundTint="@color/red_A400"
         app:tint="@color/white" />

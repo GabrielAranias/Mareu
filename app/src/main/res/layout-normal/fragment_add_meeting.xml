@@ -91,7 +91,7 @@
                     android:text="@string/add"
                     android:textColor="@color/blue_500"
                     android:textSize="12sp"
-                    app:icon="@drawable/ic_baseline_add_24"/>
+                    app:icon="@drawable/ic_baseline_add_24" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -177,6 +177,8 @@
         android:layout_gravity="end|bottom"
         android:layout_margin="16dp"
         android:contentDescription="@string/add_meeting_fab"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
         android:src="@drawable/ic_baseline_check_24"
         app:backgroundTint="@color/red_A400"
         app:tint="@color/white" />
