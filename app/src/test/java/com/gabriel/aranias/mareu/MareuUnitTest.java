@@ -11,13 +11,12 @@ import com.gabriel.aranias.mareu.model.Meeting;
 import com.gabriel.aranias.mareu.service.DummyMeetingGenerator;
 import com.gabriel.aranias.mareu.service.MeetingApiService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MareuUnitTest {
 
     private MeetingApiService service;
-    private final Meeting testMeeting = mock(Meeting.class);
+    private final Meeting testMeeting = mock(Meeting.class, RETURNS_DEEP_STUBS);
 
     @Before
     public void setUp() {
@@ -46,13 +45,22 @@ public class MareuUnitTest {
     }
 
     @Test
-    public void filterMeetingsWithSuccess() {
-        service.createMeeting(testMeeting);
-        Meeting testMeeting2 = mock(Meeting.class);
-        service.createMeeting(testMeeting2);
-        assertEquals(2, service.getMeetings().size());
-        List<Meeting> filteredMeetings = new ArrayList<>();
-        filteredMeetings.add(testMeeting);
-        assertEquals(1, filteredMeetings.size());
+    public void filterMeetingsByRoomWithSuccess() {
+        createMeetingWithSuccess();
+        String rightName = "right_name";
+        String wrongName = "wrong_name";
+        when(testMeeting.getRoom().getRoomName()).thenReturn(rightName);
+        assertTrue(service.filterMeetingsByRoom(rightName).contains(testMeeting));
+        assertFalse(service.filterMeetingsByRoom(wrongName).contains(testMeeting));
+    }
+
+    @Test
+    public void filterMeetingsByTimeWithSuccess() {
+        createMeetingWithSuccess();
+        String rightTime = "right_time";
+        String wrongTime = "wrong_time";
+        when(testMeeting.getTime()).thenReturn(rightTime);
+        assertTrue(service.filterMeetingsByTime(rightTime).contains(testMeeting));
+        assertFalse(service.filterMeetingsByTime(wrongTime).contains(testMeeting));
     }
 }

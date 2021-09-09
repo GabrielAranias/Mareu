@@ -125,7 +125,7 @@ public class MeetingsActivity extends AppCompatActivity implements onMeetingClic
         startActivity(meetingDetailsIntent);
     }
 
-    //  Remove meeting from the list when user clicks on btn
+    // Remove meeting from the list when user clicks on btn
     @Override
     public void onDeleteBtnClicked(Meeting meeting) {
         service.deleteMeeting(meeting);

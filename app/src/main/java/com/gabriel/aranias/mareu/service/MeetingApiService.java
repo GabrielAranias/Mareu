@@ -10,4 +10,8 @@ public interface MeetingApiService {
     void createMeeting(Meeting meeting);
 
     void deleteMeeting(Meeting meeting);
+
+    List<Meeting> filterMeetingsByRoom(CharSequence constraint);
+
+    List<Meeting> filterMeetingsByTime(CharSequence constraint);
 }

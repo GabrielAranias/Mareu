@@ -31,7 +31,7 @@ public class MeetingDetailsActivity extends AppCompatActivity {
         ab.setDisplayHomeAsUpEnabled(true);
     }
 
-    //Configure and show MeetingDetailsFragment
+    // Configure and show MeetingDetailsFragment
     private void addFragment() {
         MeetingDetailsFragment fragment = (MeetingDetailsFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.meeting_details_container);

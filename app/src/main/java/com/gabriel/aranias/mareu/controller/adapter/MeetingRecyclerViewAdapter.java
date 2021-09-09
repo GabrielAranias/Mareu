@@ -146,7 +146,7 @@ public class MeetingRecyclerViewAdapter extends RecyclerView.Adapter<MeetingRecy
             binding.meetingAttendeesItem.setText(getMeetingAttendees());
         }
 
-        //Display properly list of attendees
+        // Display properly list of attendees
         private StringBuilder getMeetingAttendees() {
             StringBuilder sb = new StringBuilder();
             for (Attendee attendee : currentMeeting.getAttendees()) {
